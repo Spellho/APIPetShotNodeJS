@@ -13,6 +13,10 @@ class ServiceCliente {
         if(!name || !phone || !email || !password) {
             throw new Error("Todos os dados são obrigatórios!")
         }
+        const cliente = await ModelCliente.findOne({where: {phone : phone}})
+        if(cliente) {
+            throw new Error("Telefone já cadastrado")
+        }
         const usuario = await ServiceUsuario.CreateUsuarioCliente(email, password)
         const idusuario = usuario.id
         return ModelCliente.create({ name, phone, idusuario })
